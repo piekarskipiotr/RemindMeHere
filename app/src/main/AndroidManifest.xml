@@ -16,12 +16,11 @@
                 android:name=".presentation.home.HomeActivity"
                 android:exported="false" />
         <activity
-                android:name=".presentation.addReminder.AddReminderActivity"
+                android:name=".presentation.add_reminder.AddReminderActivity"
                 android:exported="false" />
         <activity
                 android:name=".MainActivity"
                 android:exported="true"
-                android:label="@string/app_name"
                 android:theme="@style/Theme.RemindMeHere">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -1,4 +1,4 @@
-package com.piekarskipiotr.remindmehere.presentation.addReminder
+package com.piekarskipiotr.remindmehere.presentation.add_reminder
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
