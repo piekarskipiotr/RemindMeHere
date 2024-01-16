@@ -13,7 +13,6 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -26,29 +25,25 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class HomeActivity : ComponentActivity() {
-    val homeViewModel: HomeViewModel by viewModels()
+    private val homeViewModel: HomeViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             RemindMeHereTheme {
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    HomeContainer()
-                }
+                HomeContent(homeViewModel)
             }
         }
     }
 }
 
-
 @Composable
-fun HomeContainer() {
+fun HomeContent(homeViewModel: HomeViewModel) {
     val navController = rememberNavController()
     val context = LocalContext.current
 
     Scaffold(
+        modifier = Modifier.fillMaxSize(),
+        containerColor = MaterialTheme.colorScheme.background,
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
@@ -65,7 +60,7 @@ fun HomeContainer() {
                 startDestination = "mapFragment",
                 Modifier.padding(paddingValues)
             ) {
-                composable("mapFragment") { MapFragment(navController) }
+                composable("mapFragment") { MapFragment(navController, homeViewModel) }
                 composable("listFragment") { ListFragment(navController) }
             }
         }
