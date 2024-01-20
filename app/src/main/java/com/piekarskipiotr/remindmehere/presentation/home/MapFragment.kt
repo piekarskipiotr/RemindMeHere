@@ -29,7 +29,7 @@ fun MapFragment(navController: NavController, homeViewModel: HomeViewModel) {
     Box(modifier = Modifier.fillMaxSize()) {
         val userLocation by homeViewModel.currentLocation.collectAsState()
         val cameraPositionState = rememberCameraPositionState {
-            position = CameraPosition.fromLatLngZoom(userLocation, 10f)
+            position = CameraPosition.fromLatLngZoom(userLocation, 15f)
         }
 
         LaunchedEffect(userLocation) {

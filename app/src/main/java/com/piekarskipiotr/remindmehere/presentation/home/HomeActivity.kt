@@ -47,7 +47,10 @@ fun HomeContent(homeViewModel: HomeViewModel) {
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
-                    val intent = Intent(context, AddReminderActivity::class.java)
+                    val intent = Intent(context, AddReminderActivity::class.java).apply {
+                        putExtra("latitude", homeViewModel.currentLocation.value.latitude)
+                        putExtra("longitude", homeViewModel.currentLocation.value.longitude)
+                    }
                     context.startActivity(intent)
                 },
             ) {

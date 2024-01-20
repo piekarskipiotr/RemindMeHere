@@ -1,6 +1,8 @@
 package com.piekarskipiotr.remindmehere.presentation.add_reminder
 
 import androidx.compose.runtime.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.piekarskipiotr.remindmehere.data.entities.Reminder
@@ -15,16 +17,16 @@ import javax.inject.Inject
 class AddReminderViewModel @Inject constructor(
     private val reminderRepository: ReminderRepository
 ) : ViewModel() {
-    var place by mutableStateOf("")
+    private val _insertionSuccess = MutableLiveData<Boolean>()
+    val insertionSuccess: LiveData<Boolean> = _insertionSuccess
+    private var longitude by mutableDoubleStateOf(0.0)
+    private var latitude by mutableDoubleStateOf(0.0)
     var description by mutableStateOf("")
-    var sliderValue by mutableFloatStateOf(0f)
-    var placeError by mutableStateOf<String?>(null)
     var descriptionError by mutableStateOf<String?>(null)
 
-    // Methods to update the state
-    fun onPlaceChange(newPlace: String) {
-        place = newPlace
-        placeError = if (place.isEmpty()) "Pole nie może być puste" else null
+    fun updateLocation(newLongitude: Double, newLatitude: Double) {
+        longitude = newLongitude
+        latitude = newLatitude
     }
 
     fun onDescriptionChange(newDescription: String) {
@@ -32,26 +34,21 @@ class AddReminderViewModel @Inject constructor(
         descriptionError = if (description.isEmpty()) "Pole nie może być puste" else null
     }
 
-    fun onSliderValueChange(newValue: Float) {
-        sliderValue = newValue
-    }
-
     fun onSave() {
-        if (placeError == null && descriptionError == null) {
-            // TODO: Implement the data insertion logic
+        if (descriptionError == null) {
+            insert(latitude, longitude, description)
+            _insertionSuccess.postValue(true)
         }
     }
 
     private fun insert(
-        place: String,
         latitude: Double,
         longitude: Double,
         description: String,
-        range: Double
     ) = viewModelScope.launch(
         Dispatchers.IO
     ) {
-        val reminder = Reminder(Date().time, place, latitude, longitude, description, range)
+        val reminder = Reminder(Date().time, latitude, longitude, description)
         reminderRepository.insert(reminder)
     }
 }

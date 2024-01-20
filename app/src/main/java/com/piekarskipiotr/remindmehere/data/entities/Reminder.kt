@@ -10,9 +10,6 @@ data class Reminder(
     @ColumnInfo(name = "id")
     var id: Long,
 
-    @ColumnInfo(name = "name")
-    var place: String,
-
     @ColumnInfo(name = "latitude")
     var latitude: Double,
 
@@ -21,7 +18,4 @@ data class Reminder(
 
     @ColumnInfo(name = "pieces")
     var description: String,
-
-    @ColumnInfo(name = "is_done")
-    var range: Double,
 )
