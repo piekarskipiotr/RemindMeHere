@@ -17,6 +17,9 @@ import android.location.LocationManager
 import android.os.Handler
 import android.os.Looper
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class LocationService : Service() {
@@ -58,6 +61,7 @@ class LocationService : Service() {
             currentLocation?.distanceTo(reminderLocation)?.let { distance ->
                 if (distance <= 300) {
                     sendNotification(reminder)
+                    deleteReminder(reminder)
                 }
             }
         }
@@ -70,10 +74,7 @@ class LocationService : Service() {
 
         try {
             locationManager.requestLocationUpdates(
-                LocationManager.GPS_PROVIDER,
-                0L,
-                0f,
-                locationListener
+                LocationManager.GPS_PROVIDER, 0L, 0f, locationListener
             )
 
             currentLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
@@ -89,9 +90,7 @@ class LocationService : Service() {
         val notificationId = 1
 
         val channel = NotificationChannel(
-            "channel_id",
-            "Channel Name",
-            NotificationManager.IMPORTANCE_DEFAULT
+            "channel_id", "Channel Name", NotificationManager.IMPORTANCE_DEFAULT
         )
         notificationManager.createNotificationChannel(channel)
 
@@ -99,9 +98,14 @@ class LocationService : Service() {
         val notification = NotificationCompat.Builder(this, "channel_id")
             .setContentTitle("Hey you have some business near")
             .setContentText("Description: ${reminder.description}")
-            .setSmallIcon(R.drawable.ic_notification)
-            .build()
+            .setSmallIcon(R.drawable.ic_notification).build()
 
         notificationManager.notify(notificationId, notification)
+    }
+
+    private fun deleteReminder(reminder: Reminder) {
+        CoroutineScope(Dispatchers.IO).launch {
+            reminderRepository.delete(reminder)
+        }
     }
 }
