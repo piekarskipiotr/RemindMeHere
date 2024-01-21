@@ -7,6 +7,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import com.piekarskipiotr.remindmehere.presentation.home.HomeActivity
+import com.piekarskipiotr.remindmehere.services.LocationService
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -19,6 +20,7 @@ class MainActivity : ComponentActivity() {
             registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
                 val granted = permissions.entries.all { it.value }
                 if (granted) {
+                    startService(Intent(this, LocationService::class.java))
                     startActivity(Intent(this, HomeActivity::class.java))
                     finish()
                 } else {
