@@ -8,6 +8,7 @@ import javax.inject.Inject
 class ReminderRepository @Inject constructor(
     private val database: AppDatabase,
 ) {
+    fun getRemindersLiveData() = database.reminderDao().getRemindersLiveData()
     fun getReminders() = database.reminderDao().getReminders()
 
     suspend fun insert(reminder: Reminder) {

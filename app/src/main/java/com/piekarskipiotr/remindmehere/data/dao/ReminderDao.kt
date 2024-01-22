@@ -10,7 +10,10 @@ import com.piekarskipiotr.remindmehere.data.entities.Reminder
 @Dao
 interface ReminderDao {
     @Query("SELECT * FROM reminder")
-    fun getReminders(): LiveData<List<Reminder>>
+    fun getRemindersLiveData(): LiveData<List<Reminder>>
+
+    @Query("SELECT * FROM reminder")
+    fun getReminders(): List<Reminder>
 
     @Insert
     suspend fun insert(reminder: Reminder)

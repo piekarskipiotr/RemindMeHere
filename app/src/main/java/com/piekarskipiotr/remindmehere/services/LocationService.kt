@@ -1,5 +1,6 @@
 package com.piekarskipiotr.remindmehere.services
 
+import android.annotation.SuppressLint
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.Service
@@ -14,9 +15,16 @@ import javax.inject.Inject
 import android.content.Context
 import android.location.LocationListener
 import android.location.LocationManager
-import android.os.Handler
 import android.os.Looper
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationResult
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.Priority
+import com.google.android.gms.maps.model.LatLng
 import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -25,64 +33,65 @@ import kotlinx.coroutines.launch
 class LocationService : Service() {
     @Inject
     lateinit var reminderRepository: ReminderRepository
-    private val handler = Handler(Looper.getMainLooper())
-    private val checkInterval: Long = 10000
+    private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
+
+    private val locationCallback = object : LocationCallback() {
+        override fun onLocationResult(locationResult: LocationResult) {
+            val location = locationResult.lastLocation ?: return
+            checkNearbyReminders(LatLng(location.latitude, location.longitude))
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun startLocationUpdates() {
+        val locationRequest = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 10000)
+            .setWaitForAccurateLocation(false)
+            .setMinUpdateIntervalMillis(5000)
+            .setMaxUpdateDelayMillis(5000)
+            .build()
+
+        fusedLocationProviderClient.requestLocationUpdates(
+            locationRequest,
+            locationCallback,
+            Looper.getMainLooper()
+        )
+    }
+
     override fun onBind(intent: Intent?): IBinder? {
         return null
     }
 
-    private val runnableCode = object : Runnable {
-        override fun run() {
-            checkNearbyReminders()
-            handler.postDelayed(this, checkInterval)
-        }
-    }
-
     override fun onDestroy() {
-        handler.removeCallbacks(runnableCode)
         super.onDestroy()
+        fusedLocationProviderClient.removeLocationUpdates(locationCallback)
     }
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
-        handler.post(runnableCode)
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
+        startLocationUpdates()
         return START_STICKY
     }
 
-    private fun checkNearbyReminders() {
-        val currentLocation = getCurrentLocation()
-        val reminders = reminderRepository.getReminders().value
+    private fun checkNearbyReminders(currentLatLng: LatLng) {
+        val reminders = reminderRepository.getReminders()
+        val currentLocation = Location("").apply {
+            latitude = currentLatLng.latitude
+            longitude = currentLatLng.longitude
+        }
 
-        reminders?.forEach { reminder ->
+        reminders.forEach { reminder ->
+
             val reminderLocation = Location("").apply {
                 latitude = reminder.latitude
                 longitude = reminder.longitude
             }
-
-            currentLocation?.distanceTo(reminderLocation)?.let { distance ->
+            currentLocation.distanceTo(reminderLocation).let { distance ->
                 if (distance <= 300) {
                     sendNotification(reminder)
                     deleteReminder(reminder)
                 }
             }
         }
-    }
-
-    private fun getCurrentLocation(): Location? {
-        var currentLocation: Location? = null
-        val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        val locationListener = LocationListener { location -> currentLocation = location }
-
-        try {
-            locationManager.requestLocationUpdates(
-                LocationManager.GPS_PROVIDER, 0L, 0f, locationListener
-            )
-
-            currentLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
-        } catch (e: SecurityException) {
-            println("Error getting current location in service: $e")
-        }
-
-        return currentLocation
     }
 
     private fun sendNotification(reminder: Reminder) {
