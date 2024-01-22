@@ -75,19 +75,14 @@ class LocationService : Service() {
             longitude = currentLatLng.longitude
         }
 
-        println("CHUJ CURRENT LOCATION $currentLocation")
         reminders.forEach { reminder ->
             val reminderLocation = Location("").apply {
                 latitude = reminder.latitude
                 longitude = reminder.longitude
             }
 
-            println("CHUJ CURRENTreminderLocation LOCATION $reminderLocation")
-
             currentLocation.distanceTo(reminderLocation).let { distance ->
                 if (distance <= 300) {
-                    println("CHUJ distance$distance")
-
                     sendNotification(reminder)
                     deleteReminder(reminder)
                 }
@@ -96,8 +91,6 @@ class LocationService : Service() {
     }
 
     private fun sendNotification(reminder: Reminder) {
-        println("CHUJ SENDINGNOTI")
-
         val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
         val notificationId = 1
 
