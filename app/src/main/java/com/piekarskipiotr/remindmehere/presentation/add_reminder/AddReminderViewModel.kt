@@ -35,6 +35,7 @@ class AddReminderViewModel @Inject constructor(
     }
 
     fun onSave() {
+        descriptionError = if (description.isEmpty()) "Pole nie może być puste" else null
         if (descriptionError == null) {
             insert(latitude, longitude, description)
             _insertionSuccess.postValue(true)
