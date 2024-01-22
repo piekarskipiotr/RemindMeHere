@@ -16,6 +16,6 @@ data class Reminder(
     @ColumnInfo(name = "longitude")
     var longitude: Double,
 
-    @ColumnInfo(name = "pieces")
+    @ColumnInfo(name = "description")
     var description: String,
 )

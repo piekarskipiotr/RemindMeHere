@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import androidx.sqlite.db.SupportSQLiteDatabase
 import com.piekarskipiotr.remindmehere.data.dao.ReminderDao
 import com.piekarskipiotr.remindmehere.data.entities.Reminder
 
@@ -31,16 +30,6 @@ abstract class AppDatabase : RoomDatabase() {
                 )
                     .fallbackToDestructiveMigration()
                     .allowMainThreadQueries()
-                    .addCallback(object : RoomDatabase.Callback() {
-                        override fun onCreate(db: SupportSQLiteDatabase) {
-                            super.onCreate(db)
-//                            CoroutineScope(Dispatchers.Default).launch {
-//                                instance!!.shoppingListDao().insert(ShoppingList(1, "Example list", 1, 2, Date(), false))
-//                                instance!!.groceryDao().insert(Grocery(0, "Banana", 7, false, 1))
-//                                instance!!.groceryDao().insert(Grocery(0, "Blueberry", 47, true, 1))
-//                            }
-                        }
-                    })
                     .build()
             return instance!!
         }

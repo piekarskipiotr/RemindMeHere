@@ -83,7 +83,7 @@ fun MapView(addReminderViewModel: AddReminderViewModel, latLng: LatLng) {
         LaunchedEffect(cameraPositionState.isMoving) {
             if (!cameraPositionState.isMoving) {
                 val center = cameraPositionState.position.target
-                addReminderViewModel.updateLocation(center.latitude, center.longitude)
+                addReminderViewModel.updateLocation(center.longitude, center.latitude)
             }
         }
     }
