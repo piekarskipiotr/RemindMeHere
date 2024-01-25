@@ -64,7 +64,7 @@ fun HomeContent(homeViewModel: HomeViewModel) {
                 Modifier.padding(paddingValues)
             ) {
                 composable("mapFragment") { MapFragment(navController, homeViewModel) }
-                composable("listFragment") { ListFragment(navController) }
+                composable("listFragment") { ListFragment(navController, homeViewModel) }
             }
         }
     )
