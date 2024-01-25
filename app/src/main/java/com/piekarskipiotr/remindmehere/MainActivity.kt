@@ -21,7 +21,7 @@ class MainActivity : ComponentActivity() {
             registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
                 val granted = permissions.entries.all { it.value }
                 if (granted) {
-                    startService(Intent(this, LocationService::class.java))
+                    startForegroundService(Intent(this, LocationService::class.java))
                     startActivity(Intent(this, HomeActivity::class.java))
                     finish()
                 } else {
@@ -30,8 +30,6 @@ class MainActivity : ComponentActivity() {
             }
 
         requestLocationPermissions()
-
-
     }
 
     private fun requestLocationPermissions() {
