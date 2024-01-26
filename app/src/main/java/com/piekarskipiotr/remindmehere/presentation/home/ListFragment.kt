@@ -21,22 +21,10 @@ import androidx.navigation.NavController
 import com.piekarskipiotr.remindmehere.R
 
 
-
 @Composable
 fun ListFragment(navController: NavController, homeViewModel: HomeViewModel) {
     Box(modifier = Modifier.fillMaxSize()) {
-        IconButton(
-            onClick = { navController.navigate("mapFragment") },
-            modifier = Modifier
-                .align(Alignment.TopEnd)
-                .padding(16.dp)
-                .background(Color.White, shape = CircleShape)
-        ) {
-            Icon(
-                painterResource(id = R.drawable.map_icon),
-                contentDescription = "Map view of reminders"
-            )
-        }
+
         val reminders = homeViewModel.getReminders().observeAsState(initial = emptyList())
         //val reminders = remember { DataProvider.reminderList }
         LazyColumn(
@@ -47,6 +35,18 @@ fun ListFragment(navController: NavController, homeViewModel: HomeViewModel) {
                 itemContent = {
                     ReminderListItem(reminder = it,  homeViewModel = homeViewModel)
                 }
+            )
+        }
+        IconButton(
+            onClick = { navController.navigate("mapFragment") },
+            modifier = Modifier
+                .align(Alignment.TopEnd)
+                .padding(16.dp)
+                .background(Color.White, shape = CircleShape)
+        ) {
+            Icon(
+                painterResource(id = R.drawable.map_icon),
+                contentDescription = "Map view of reminders"
             )
         }
     }
