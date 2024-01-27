@@ -1,24 +1,44 @@
 # Remind Me Here 📍
 
-## Description
+## Opis
 
-Remind Me Here is an innovative mobile application 📱 designed to help you remember important tasks and reminders based on your location 🌍. Whether you need to remember to buy a gift 🎁 when passing by your favorite store or want to be reminded of an important task when you arrive at the office 🏢, Remind Me Here serves as your personal assistant 🤖, ensuring you don't miss a thing.
+Remind Me Here to innowacyjna aplikacja mobilna 📱 zaprojektowana, aby pomóc Ci pamiętać o ważnych zadaniach i przypomnieniach w oparciu o Twoją lokalizację 🌍. Niezależnie od tego, czy potrzebujesz przypomnienia, aby kupić prezent 🎁 przechodząc obok ulubionego sklepu, czy chcesz zostać przypomniany o ważnym zadaniu po przybyciu do biura 🏢, Remind Me Here służy jako Twój osobisty asystent 🤖, zapewniając, że nic Ci nie umknie.
 
-## Features
+## Funkcje
 
-- **Location-Based Reminders:** Set reminders for specific locations 📍 to receive notifications 🔔 when you arrive there.
-- **User-Friendly Map Interface:** Select locations for your reminders directly on the map 🗺️.
-- **User-Friendly Interface:** A clean and intuitive user interface makes managing your reminders easy ✨.
+- **Przypomnienia oparte na lokalizacji:** Ustawiaj przypomnienia dla konkretnych lokalizacji 📍, aby otrzymywać powiadomienia 🔔, gdy tam dotrzesz.
+- **Przyjazny interfejs mapy:** Wybieraj lokalizacje dla swoich przypomnień bezpośrednio na mapie 🗺️.
+- **Przyjazny interfejs użytkownika:** Czysty i intuicyjny interfejs użytkownika ułatwia zarządzanie twoimi przypomnieniami ✨.
 
-## Requirements
+## Wymagania
 
-For the app to function correctly, it is necessary to grant the appropriate permissions. Remind Me Here requires constant access to your location 🛰️ to remind you of tasks depending on where you are.
+Aby aplikacja funkcjonowała poprawnie, konieczne jest przyznanie odpowiednich uprawnień. Remind Me Here wymaga stałego dostępu do Twojej lokalizacji 🛰️, aby przypominać Ci o zadaniach w zależności od tego, gdzie się znajdujesz.
 
-## How to Set Permissions
+### Specyfikacje techniczne
+- **Zbudowane z Kotlin:** Rozwinięte przy użyciu Kotlina, nowoczesnego języka programowania, który zapewnia zwięzły, czytelny i bezpieczny kod.
+- **Kotlin Coroutines:** Wykorzystuje Kotlin Coroutines do efektywnego programowania asynchronicznego, umożliwiając płynne i nieblokujące wykonywanie połączeń sieciowych, przetwarzanie danych i wiele więcej.
+- **Architektura MVVM:** Przyjmuje architekturę Model-View-ViewModel (MVVM), ułatwiając modularność, testowalność i utrzymanie bazy kodu.
+- **Hilt do wstrzykiwania zależności:** Wykorzystuje Hilt do uproszczonego wstrzykiwania zależności, upraszczając zarządzanie zależnościami i zapewniając skalowalny sposób organizacji architektury aplikacji.
+- **ViewModel:** Wykorzystuje komponent ViewModel do zarządzania danymi związanymi z UI w sposób świadomy cyklu życia, zapewniając solidne i responsywne doświadczenie użytkownika.
 
-### Location Permissions "All the time"
+Aby dopełnić opis aplikacji "Remind Me Here", dodam szczegółowe informacje o uprawnieniach, których wymaga aplikacja:
 
-1. Go to **Settings** ⚙️ on your device and choose **Apps** 📲.
-2. Find the Remind Me Here app in the list and select it.
-3. Choose **App permissions** > **Location** 📍.
-4. Choose the **Allow all the time** option to allow the app to send you reminders based on your location, even when not in active use.
+### Dodatkowe Informacje o Uprawnieniach
+
+Aplikacja Remind Me Here wymaga następujących uprawnień, aby zapewnić pełną funkcjonalność i optymalne użytkowanie:
+
+- **Dostęp do przybliżonej lokalizacji (`ACCESS_COARSE_LOCATION`):** Pozwala aplikacji na uzyskanie przybliżonej lokalizacji urządzenia, wykorzystując sieć i inne metody lokalizacji. Jest to przydatne, gdy dokładna lokalizacja GPS nie jest dostępna.
+- **Dostęp do dokładnej lokalizacji (`ACCESS_FINE_LOCATION`):** Umożliwia aplikacji dostęp do dokładnej lokalizacji urządzenia za pomocą modułu GPS, co jest niezbędne do precyzyjnego określania, kiedy użytkownik znajduje się w wyznaczonej lokalizacji przypomnienia.
+- **Dostęp do lokalizacji w tle (`ACCESS_BACKGROUND_LOCATION`):** To uprawnienie jest kluczowe dla działania aplikacji Remind Me Here, ponieważ umożliwia jej monitorowanie lokalizacji użytkownika nawet wtedy, gdy aplikacja nie jest aktywnie używana. Dzięki temu użytkownicy mogą otrzymywać powiadomienia o przypomnieniach na podstawie lokalizacji, niezależnie od tego, czy aplikacja jest otwarta, czy działa w tle.
+- **Wysyłanie powiadomień (`POST_NOTIFICATIONS`):** Uprawnienie to pozwala aplikacji na wyświetlanie powiadomień na urządzeniu, co jest istotne dla funkcji przypomnień. Dzięki temu użytkownicy są natychmiast informowani o przypomnieniach poprzez powiadomienia, co zwiększa skuteczność aplikacji w przypominaniu o ważnych zadaniach i wydarzeniach.
+
+Zapewnienie tych uprawnień jest niezbędne dla pełnej funkcjonalności aplikacji Remind Me Here, umożliwiając jej skuteczne śledzenie lokalizacji użytkownika i dostarczanie odpowiednich przypomnień w odpowiednim czasie i miejscu.
+
+## Jak ustawić uprawnienia
+
+### Uprawnienia do lokalizacji "Cały czas"
+
+1. Przejdź do **Ustawień** ⚙️ na swoim urządzeniu i wybierz **Aplikacje** 📲.
+2. Znajdź aplikację Remind Me Here na liście i wybierz ją.
+3. Wybierz **Uprawnienia aplikacji** > **Lokalizacja** 📍.
+4. Wybierz opcję **Zezwalaj cały czas**, aby umożliwić aplikacji wysyłanie przypomnień w oparciu o Twoją lokalizację, nawet gdy nie jest używana.
