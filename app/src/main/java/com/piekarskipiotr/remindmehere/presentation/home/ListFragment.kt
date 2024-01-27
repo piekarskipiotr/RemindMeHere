@@ -23,15 +23,14 @@ import com.piekarskipiotr.remindmehere.R
 
 @Composable
 fun ListFragment(navController: NavController, homeViewModel: HomeViewModel) {
-    Box(modifier = Modifier.fillMaxSize()) {
+    val reminders = homeViewModel.getReminders().observeAsState(initial = emptyList())
 
-        val reminders = homeViewModel.getReminders().observeAsState(initial = emptyList())
-        //val reminders = remember { DataProvider.reminderList }
+    Box(modifier = Modifier.fillMaxSize()) {
         LazyColumn(
             contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
         ) {
             items(
-                items = reminders.value ?: emptyList(),
+                items = reminders.value,
                 itemContent = {
                     ReminderListItem(reminder = it,  homeViewModel = homeViewModel)
                 }

@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -20,12 +21,17 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MapUiSettings
+import com.google.maps.android.compose.Marker
+import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
 
 @Composable
 fun MapFragment(navController: NavController, homeViewModel: HomeViewModel) {
+    val reminders = homeViewModel.getReminders().observeAsState(initial = emptyList())
+
     Box(modifier = Modifier.fillMaxSize()) {
         val userLocation by homeViewModel.currentLocation.collectAsState()
         val cameraPositionState = rememberCameraPositionState {
@@ -40,7 +46,14 @@ fun MapFragment(navController: NavController, homeViewModel: HomeViewModel) {
             modifier = Modifier.fillMaxSize(),
             cameraPositionState = cameraPositionState,
             uiSettings = MapUiSettings(zoomControlsEnabled = false)
-        )
+        ) {
+            reminders.value.forEach { reminder ->
+                Marker(
+                    state = MarkerState(position = LatLng(reminder.latitude, reminder.longitude)),
+                    title = reminder.description,
+                )
+            }
+        }
 
         IconButton(
             onClick = { navController.navigate("listFragment") },
