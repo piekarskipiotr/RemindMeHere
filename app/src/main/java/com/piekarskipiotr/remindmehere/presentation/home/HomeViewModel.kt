@@ -41,14 +41,6 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    /*fun getReminders(
-
-    ) = viewModelScope.launch(
-        Dispatchers.IO
-    ) {
-        reminderRepository.getRemindersLiveData()
-    }*/
-
     fun getReminders(): LiveData<List<Reminder>> {
         return reminderRepository.getRemindersLiveData()
     }
