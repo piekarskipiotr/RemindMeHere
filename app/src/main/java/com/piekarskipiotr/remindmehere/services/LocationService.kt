@@ -29,6 +29,8 @@ class LocationService : Service() {
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private val handler = Handler(Looper.getMainLooper())
     private val checkInterval: Long = 10000
+    private val channelID: String = "REMIND_ME_HERE_CHANNEL_ID"
+    private val channelName: String = "REMIND_ME_HERE_CHANNEL"
     override fun onBind(intent: Intent?): IBinder? {
         return null
     }
@@ -102,13 +104,13 @@ class LocationService : Service() {
         val notificationId = 1
 
         val channel = NotificationChannel(
-            "channel_id", "Channel Name", NotificationManager.IMPORTANCE_HIGH
+            channelID, channelName, NotificationManager.IMPORTANCE_HIGH
         )
         notificationManager.createNotificationChannel(channel)
 
 
-        val notification = NotificationCompat.Builder(this, "channel_id")
-            .setContentTitle("Hey you have some business near")
+        val notification = NotificationCompat.Builder(this, channelID)
+            .setContentTitle("Hey, you seem to have some business nearby.")
             .setContentText("Description: ${reminder.description}")
             .setSmallIcon(R.drawable.ic_notification).build()
 
