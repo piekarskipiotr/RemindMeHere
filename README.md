@@ -18,8 +18,7 @@ For the app to function correctly, it is necessary to grant the appropriate perm
 
 ### Location Permissions "All the time"
 
-1. Go to **Settings** on your device.
-2. Choose **Apps**>
+1. Go to **Settings** on your device and choose **Apps**
 3. Find the Remind Me Here app in the list and select it.
 4. Choose **App permissions** > **Location**.
 5. Choose the **Allow all the time** option to allow the app to send you reminders based on your location, even when not in active use.
